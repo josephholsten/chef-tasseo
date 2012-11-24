@@ -19,28 +19,28 @@
 # limitations under the License.
 #
 
-include_recipe "apache2"
+include_recipe 'apache2'
 
-apache_module "proxy"
-apache_module "proxy_http"
-apache_module "vhost_alias"
-apache_module "headers"
+apache_module 'proxy'
+apache_module 'proxy_http'
+apache_module 'vhost_alias'
+apache_module 'headers'
 
-template "#{node[:apache][:dir]}/sites-available/tasseo" do
-  source      "apache_vhost.erb"
+template "#{node['apache']['dir']}/sites-available/tasseo" do
+  source      'apache_vhost.erb'
   owner       'root'
   group       'root'
   mode        '0644'
 
-  if File.exists?("#{node[:apache][:dir]}/sites-enabled/tasseo")
+  if File.exists?("#{node['apache']['dir']}/sites-enabled/tasseo")
     notifies  :restart, 'service[apache2]'
   end
 end
 
-apache_site "000-default" do
+apache_site '000-default' do
   enable  false
 end
 
-apache_site "tasseo" do
+apache_site 'tasseo' do
   enable true
 end
